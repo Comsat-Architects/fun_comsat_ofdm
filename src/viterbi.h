@@ -15,10 +15,12 @@
 #include <math.h>
 #include <memory.h>
 
-#include <pmmintrin.h>
-#include <emmintrin.h>
-#include <xmmintrin.h>
-#include <mmintrin.h>
+//#include <pmmintrin.h>
+//#include <emmintrin.h>
+//#include <xmmintrin.h>
+//#include <mmintrin.h>
+
+#include "sse2neon.h"
 
 #define K 7
 #define RATE 2

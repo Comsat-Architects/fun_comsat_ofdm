@@ -53,9 +53,63 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3") # Optimization!!
 ########################################################################
 
 # Find boost
-if(UNIX AND EXISTS "/usr/lib64")
-    list(APPEND BOOST_LIBRARYDIR "/usr/lib64") #fedora 64-bit fix
-endif(UNIX AND EXISTS "/usr/lib64")
+IF(ANDROID)
+    IF((DEFINED ANDROID_ABI) AND (DEFINED ANDROID_ARCH) AND (DEFINED ANDROID_SYSROOT))
+        SET(CMAKE_C_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang")
+        SET(CMAKE_CXX_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang++")
+
+        EXECUTE_PROCESS(COMMAND "which" "${CMAKE_C_COMPILER}" OUTPUT_VARIABLE COMPILER_PATH)
+        EXECUTE_PROCESS(COMMAND "dirname" "${COMPILER_PATH}" OUTPUT_VARIABLE COMPILER_DIR)
+
+        SET(NDK_ROOTDIR "${COMPILER_DIR}/..")
+
+        MESSAGE(STATUS "Using c++ compiler: ${CMAKE_CXX_COMPILER}")
+
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-command-line-argument")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -static-libstdc++ -Wno-unused-command-line-argument")
+
+        INCLUDE_DIRECTORIES("${ANDROID_SYSROOT}/include")
+        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/lib64")
+        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/vendor/lib64")
+
+        FIND_LIBRARY(OpenCL 2.2 REQUIRED
+            HINTS "${ANDROID_SYSROOT}/system/vendor/lib64"
+        )
+
+        LIST(APPEND INCLUDE_PATHS
+            "${ANDROID_SYSROOT}/include"
+            "${NDK_ROOTDIR}/sysroot/include"
+            "${NDK_ROOTDIR}/sysroot/usr/include"
+            "${NDK_ROOTDIR}/sysroot/usr/local/include"
+            "${NDK_ROOTDIR}/sysroot/usr/include/aarch64-linux-android"
+        )
+
+        unset(BOOST_INCLUDEDIR)
+        unset(BOOST_LIBRARYDIR)
+
+        set(Boost_NO_BOOST_CMAKE ON)
+        set(Boost_NO_SYSTEM_PATHS ON)
+        set(Boost_USE_STATIC_LIBS ON)
+        set(Boost_COMPILER "-clang")
+        set(Boost_ARCHITECTURE "-a64")
+
+        list(APPEND BOOST_INCLUDEDIR "${ANDROID_SYSROOT}/include")
+        list(APPEND BOOST_LIBRARYDIR "${ANDROID_SYSROOT}/lib")
+
+        message(STATUS "${BOOST_INCLUDEDIR}")
+
+    ELSE()
+        MESSAGE(ERROR "Android build requires ANDROID_ABI, ANDROID_ARCH, and ANDROID_SYSROOT to be defined")
+    ENDIF()
+
+ELSE()
+
+    if(UNIX AND EXISTS "/usr/lib64")
+        list(APPEND BOOST_LIBRARYDIR "/usr/lib64") #fedora 64-bit fix
+    endif(UNIX AND EXISTS "/usr/lib64")
+
+
+ENDIF()
 
 # If you want to use a boost version greater than 1.69.0 then you will have to
 # add it to this list
@@ -68,11 +122,16 @@ set(Boost_ADDITIONAL_VERSIONS
     "1.60.0" "1.60" "1.61.0" "1.61" "1.62.0" "1.62" "1.63.0" "1.63" "1.64.0" "1.64"
     "1.65.0" "1.65" "1.66.0" "1.66" "1.67.0" "1.67" "1.68.0" "1.68" "1.69.0" "1.69"
 )
+
 find_package(Boost "1.59" COMPONENTS filesystem system thread) # Might need more components
 
 if(NOT Boost_FOUND)
     message(FATAL_ERROR "Boost required to compile fun_ofdm")
 endif()
+
+IF(ANDROID)
+    list(REMOVE_ITEM Boost_LIBRARIES "-lpthread")
+ENDIF()
 
 # Find UHD
 find_package(UHD)

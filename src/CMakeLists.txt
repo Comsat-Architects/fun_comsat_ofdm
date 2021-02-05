@@ -82,7 +82,12 @@ list(APPEND sources
 #	pthread (this one is a bit strange)
 ########################################################################
 # target_link_libraries(fun_ofdm uhd fftw3 pthread)  # Equivalent to below
+IF(ANDROID)
+ message(STATUS "${UHD_LIBRARIES} ${FFTW3_LIBRARIES} ${Boost_LIBRARIES}")
+ target_link_libraries(fun_ofdm ${UHD_LIBRARIES} ${FFTW3_LIBRARIES} ${Boost_LIBRARIES}) #equivalent to line above but better style?
+ELSE()
  target_link_libraries(fun_ofdm ${UHD_LIBRARIES} ${FFTW3_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT}) #equivalent to line above but better style?
+ENDIF()
 
 ########################################################################
 # Install Rules

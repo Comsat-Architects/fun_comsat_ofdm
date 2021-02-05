@@ -13,10 +13,11 @@
 #include <time.h>
 #include <memory.h>
 #include <sys/resource.h>
-#include <pmmintrin.h>
-#include <emmintrin.h>
-#include <xmmintrin.h>
-#include <mmintrin.h>
+//#include <pmmintrin.h>
+//#include <emmintrin.h>
+//#include <xmmintrin.h>
+//#include <mmintrin.h>
+#include "sse2neon.h"
 
 #include <unistd.h>
 
