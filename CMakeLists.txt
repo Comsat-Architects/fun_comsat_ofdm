@@ -65,8 +65,8 @@ IF(ANDROID)
 
         MESSAGE(STATUS "Using c++ compiler: ${CMAKE_CXX_COMPILER}")
 
-        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-command-line-argument")
-        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -static-libstdc++ -Wno-unused-command-line-argument")
+        SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-command-line-argument -Wl,-rpath,/data/local/tmp/lib/")
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -static-libstdc++ -Wno-unused-command-line-argument -Wl,-rpath,/data/local/tmp/lib")
 
         INCLUDE_DIRECTORIES("${ANDROID_SYSROOT}/include")
         LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/lib64")
