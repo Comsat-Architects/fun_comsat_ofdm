@@ -92,7 +92,7 @@ namespace fun
          */
         void get_samples(int num_samples, std::vector<std::complex<double> > & buffer);
 
-        boost::shared_ptr<uhd::usrp::multi_usrp> *get_usrp();
+        boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
 
 
     private:

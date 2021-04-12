@@ -82,6 +82,11 @@ namespace fun
          */
         void resume();
 
+        /*!
+         * \brief returns the USRP
+         */
+        boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
+
     private:
 
         void receiver_chain_loop(); //!< Infinite while loop where samples are received from USRP and processed by the receiver_chain

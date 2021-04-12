@@ -72,6 +72,11 @@ namespace fun {
          */
         void send_frame(std::vector<unsigned char> payload, Rate phy_rate = RATE_1_2_BPSK);
 
+        /*!
+         * \brief returns the USRP
+         */
+        boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
+
     private:
 
         usrp m_usrp; //!< The usrp object used to send the generated frames over the air
