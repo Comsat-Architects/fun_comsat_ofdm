@@ -72,6 +72,8 @@ namespace fun
          */
         receiver(void(*callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples), usrp_params params = usrp_params());
 
+        ~receiver();
+
         /*!
          * \brief Pauses the receiver thread.
          */
@@ -103,7 +105,7 @@ namespace fun
 
         std::vector<std::complex<double> > m_samples; //!< Vector to hold the raw samples received from the USRP and passed into the receiver_chain
 
-        std::thread m_rec_thread; //!< The thread that the receiver chain runs in
+        std::thread* m_rec_thread; //!< The thread that the receiver chain runs in
 
         sem_t m_pause; //!< Semaphore used to pause the receiver thread
 
