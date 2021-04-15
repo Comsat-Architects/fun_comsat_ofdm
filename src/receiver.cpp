@@ -27,8 +27,16 @@ namespace fun
         m_callback(callback),
         m_rec_chain()
     {
+    }
+
+    void receiver::start(){
         sem_init(&m_pause, 0, 1); //Initial value is 1 so that the receiver_chain_loop() will begin executing immediately
         m_rec_thread = std::thread(&receiver::receiver_chain_loop, this); //Initialize the main receiver thread
+
+    }
+
+    void receiver::set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples)){
+        this->m_callback = m_callback;
     }
 
     /*!

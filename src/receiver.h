@@ -87,6 +87,10 @@ namespace fun
          */
         boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
 
+        void start();
+
+        void set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples));
+
     private:
 
         void receiver_chain_loop(); //!< Infinite while loop where samples are received from USRP and processed by the receiver_chain
@@ -103,7 +107,7 @@ namespace fun
 
         sem_t m_pause; //!< Semaphore used to pause the receiver thread
 
-
+        
 
 
     };
