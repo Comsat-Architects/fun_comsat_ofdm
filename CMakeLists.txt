@@ -176,5 +176,5 @@ include_directories("/opt/local/include")
 # Add subdirectories
 ########################################################################
 add_subdirectory(src)
-add_subdirectory(examples)
+#add_subdirectory(examples)
 

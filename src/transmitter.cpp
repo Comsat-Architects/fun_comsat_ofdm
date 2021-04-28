@@ -36,4 +36,9 @@ namespace fun {
         m_usrp.send_burst_sync(samples);
     }
 
+    boost::shared_ptr<uhd::usrp::multi_usrp> transmitter::get_usrp() 
+    {
+        return m_usrp.get_usrp();
+    }
+
 }
