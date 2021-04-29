@@ -89,7 +89,7 @@ namespace fun
         sem_post(&m_pause);
     }
 
-    boost::shared_ptr<uhd::usrp::multi_usrp> receiver::get_usrp() 
+    uhd::usrp::multi_usrp::sptr receiver::get_usrp() 
     {
         return m_usrp.get_usrp();
     }

@@ -45,7 +45,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 # Compiler specific setup
 ########################################################################
 # C++ Compile Flags
-set(CMAKE_CXX_FLAGS "-m64 -std=c++11 -mssse3 -msse4.1")
+set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3") # Optimization!!
 
 ########################################################################
@@ -53,55 +53,55 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3") # Optimization!!
 ########################################################################
 
 # Find boost
-IF(ANDROID)
-    IF((DEFINED ANDROID_ABI) AND (DEFINED ANDROID_ARCH) AND (DEFINED ANDROID_SYSROOT))
-        SET(CMAKE_C_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang")
-        SET(CMAKE_CXX_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang++")
+IF(ARM)
+#    IF((DEFINED ANDROID_ABI) AND (DEFINED ANDROID_ARCH) AND (DEFINED ANDROID_SYSROOT))
+#        SET(CMAKE_C_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang")
+#        SET(CMAKE_CXX_COMPILER "${ANDROID_ARCH}-linux-android${ANDROID_ABI}-clang++")
 
         EXECUTE_PROCESS(COMMAND "which" "${CMAKE_C_COMPILER}" OUTPUT_VARIABLE COMPILER_PATH)
         EXECUTE_PROCESS(COMMAND "dirname" "${COMPILER_PATH}" OUTPUT_VARIABLE COMPILER_DIR)
 
-        SET(NDK_ROOTDIR "${COMPILER_DIR}/..")
+#        SET(NDK_ROOTDIR "${COMPILER_DIR}/..")
 
         MESSAGE(STATUS "Using c++ compiler: ${CMAKE_CXX_COMPILER}")
 
         SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-command-line-argument -Wno-return-type -Wl,-rpath,/data/local/tmp/lib/")
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fexceptions -static-libstdc++ -Wno-unused-command-line-argument -Wno-return-type -Wl,-rpath,/data/local/tmp/lib")
 
-        INCLUDE_DIRECTORIES("${ANDROID_SYSROOT}/include")
-        LINK_DIRECTORIES("${ANDROID_SYSROOT}/lib")
-        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/lib64")
-        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/vendor/lib64")
+#        INCLUDE_DIRECTORIES("${ANDROID_SYSROOT}/include")
+#        LINK_DIRECTORIES("${ANDROID_SYSROOT}/lib")
+#        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/lib64")
+#        LINK_DIRECTORIES("${ANDROID_SYSROOT}/system/vendor/lib64")
 
-        FIND_LIBRARY(OpenCL 2.2 REQUIRED
-            HINTS "${ANDROID_SYSROOT}/system/vendor/lib64"
-        )
+#        FIND_LIBRARY(OpenCL 2.2 REQUIRED
+#            HINTS "${ANDROID_SYSROOT}/system/vendor/lib64"
+#        )
 
-        LIST(APPEND INCLUDE_PATHS
-            "${ANDROID_SYSROOT}/include"
-            "${NDK_ROOTDIR}/sysroot/include"
-            "${NDK_ROOTDIR}/sysroot/usr/include"
-            "${NDK_ROOTDIR}/sysroot/usr/local/include"
-            "${NDK_ROOTDIR}/sysroot/usr/include/aarch64-linux-android"
-        )
+#        LIST(APPEND INCLUDE_PATHS
+#            "${ANDROID_SYSROOT}/include"
+#            "${NDK_ROOTDIR}/sysroot/include"
+#            "${NDK_ROOTDIR}/sysroot/usr/include"
+#            "${NDK_ROOTDIR}/sysroot/usr/local/include"
+#            "${NDK_ROOTDIR}/sysroot/usr/include/aarch64-linux-android"
+#        )
 
-        unset(BOOST_INCLUDEDIR)
-        unset(BOOST_LIBRARYDIR)
+#        unset(BOOST_INCLUDEDIR)
+#        unset(BOOST_LIBRARYDIR)
 
-        set(Boost_NO_BOOST_CMAKE ON)
-        set(Boost_NO_SYSTEM_PATHS ON)
-        set(Boost_USE_STATIC_LIBS ON)
-        set(Boost_COMPILER "-clang")
-        set(Boost_ARCHITECTURE "-a64")
+#        set(Boost_NO_BOOST_CMAKE ON)
+#        set(Boost_NO_SYSTEM_PATHS ON)
+#        set(Boost_USE_STATIC_LIBS ON)
+#        set(Boost_COMPILER "-clang")
+#        set(Boost_ARCHITECTURE "-a64")
 
-        list(APPEND BOOST_INCLUDEDIR "${ANDROID_SYSROOT}/include")
-        list(APPEND BOOST_LIBRARYDIR "${ANDROID_SYSROOT}/lib")
+#        list(APPEND BOOST_INCLUDEDIR "${ANDROID_SYSROOT}/include")
+#        list(APPEND BOOST_LIBRARYDIR "${ANDROID_SYSROOT}/lib")
 
         message(STATUS "${BOOST_INCLUDEDIR}")
 
-    ELSE()
-        MESSAGE(ERROR "Android build requires ANDROID_ABI, ANDROID_ARCH, and ANDROID_SYSROOT to be defined")
-    ENDIF()
+#   ELSE()
+#        MESSAGE(ERROR "Android build requires ANDROID_ABI, ANDROID_ARCH, and ANDROID_SYSROOT to be defined")
+#    ENDIF()
 
 ELSE()
 
@@ -176,5 +176,5 @@ include_directories("/opt/local/include")
 # Add subdirectories
 ########################################################################
 add_subdirectory(src)
-#add_subdirectory(examples)
+add_subdirectory(examples)
 

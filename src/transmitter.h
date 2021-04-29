@@ -75,7 +75,7 @@ namespace fun {
         /*!
          * \brief returns the USRP
          */
-        boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
+        uhd::usrp::multi_usrp::sptr get_usrp();
 
     private:
 

@@ -129,7 +129,7 @@ namespace fun
         m_rx_streamer->recv(&buffer[0], num_samples, rx_meta);
     }
 
-    boost::shared_ptr<uhd::usrp::multi_usrp> usrp::get_usrp()
+    uhd::usrp::multi_usrp::sptr usrp::get_usrp()
     {
         return this->m_usrp;
     }

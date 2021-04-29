@@ -92,7 +92,7 @@ namespace fun
          */
         void get_samples(int num_samples, std::vector<std::complex<double> > & buffer);
 
-        boost::shared_ptr<uhd::usrp::multi_usrp> get_usrp();
+        uhd::usrp::multi_usrp::sptr get_usrp();
 
 
     private:
@@ -100,8 +100,8 @@ namespace fun
 
         usrp_params m_params; //!< Container for the parameters for this instance of the USRP class.
 
-        boost::shared_ptr<uhd::usrp::multi_usrp> m_usrp; //!< multi_usrp (main USRP handle)
-        boost::shared_ptr<uhd::device> m_device;         //!< device (receives async messages)
+        uhd::usrp::multi_usrp::sptr m_usrp; //!< multi_usrp (main USRP handle)
+        uhd::device::sptr m_device;         //!< device (receives async messages)
         uhd::rx_streamer::sptr m_rx_streamer;            //!< TX (output) streamer
         uhd::tx_streamer::sptr m_tx_streamer;            //!<  RX (input) streamer
 
