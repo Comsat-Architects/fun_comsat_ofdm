@@ -55,7 +55,7 @@ namespace fun
          *    + tx_gain -> 20 even though it is irrelevant for the receiver
          *    + amp -> 1.0 even though it is irrelevant for the receiver
          */
-        receiver(void(*callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples), double freq = 5.72e9, double samp_rate = 5e6, double rx_gain = 20, std::string device_addr = "");
+        receiver(void(*callback)(std::vector<std::vector<unsigned char> > packets), double freq = 5.72e9, double samp_rate = 5e6, double rx_gain = 20, std::string device_addr = "");
 
         /*!
          * \brief Constructor for the receiver that uses the usrp_params struct
@@ -70,7 +70,7 @@ namespace fun
          *  - device ip address -> "" (empty string will default to letting the UHD api
          *    automatically find an available USRP)
          */
-        receiver(void(*callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples), usrp_params params = usrp_params());
+        receiver(void(*callback)(std::vector<std::vector<unsigned char> > packets), usrp_params params = usrp_params());
 
         ~receiver();
 
@@ -91,7 +91,7 @@ namespace fun
 
         void start();
 
-        void set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples));
+        void set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets));
 
     private:
 

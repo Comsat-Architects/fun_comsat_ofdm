@@ -13,7 +13,7 @@ namespace fun
     /*!
      * This constructor shows exactly what parameters need to be set for the receiver.
      */
-    receiver::receiver(void (*callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples), double freq, double samp_rate, double rx_gain, std::string device_addr) :
+    receiver::receiver(void (*callback)(std::vector<std::vector<unsigned char> > packets), double freq, double samp_rate, double rx_gain, std::string device_addr) :
         receiver(callback, usrp_params(freq, samp_rate, 20, rx_gain, 1.0, device_addr))
     {
     }
@@ -21,7 +21,7 @@ namespace fun
     /*!
      * This constructor is for those who feel more comfortable using the usrp_params struct.
      */
-    receiver::receiver(void (*callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples), usrp_params params) :
+    receiver::receiver(void (*callback)(std::vector<std::vector<unsigned char> > packets), usrp_params params) :
         m_usrp(params),
         m_samples(NUM_RX_SAMPLES),
         m_callback(callback),
@@ -30,12 +30,12 @@ namespace fun
     }
 
     void receiver::start(){
-        sem_init(&m_pause, 0, 1); //Initial value is 1 so that the receiver_chain_loop() will begin executing immediately
+       sem_init(&m_pause, 0, 1); //Initial value is 1 so that the receiver_chain_loop() will begin executing immediately
         this->m_rec_thread = new std::thread(&receiver::receiver_chain_loop, this); //Initialize the main receiver thread
 
     }
 
-    void receiver::set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets, std::vector<std::complex<double> > samples)){
+    void receiver::set_callback(void (*m_callback)(std::vector<std::vector<unsigned char> > packets)){
         this->m_callback = m_callback;
     }
 
@@ -63,7 +63,7 @@ namespace fun
             std::vector<std::vector<unsigned char> > packets =
                     m_rec_chain.process_samples(m_samples);
 
-            m_callback(packets, m_samples);
+            m_callback(packets);
 
             sem_post(&m_pause); // Flags the end of this loop and wakes up any other threads waiting on this semaphore
                                 // i.e. a call to the pause() function in the main thread.
