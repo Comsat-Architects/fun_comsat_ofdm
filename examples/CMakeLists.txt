@@ -16,7 +16,7 @@ list(APPEND test_sim_srcs
     test_sim.cpp
 )
 
-#list(APPEND test_tx_srcs
+list(APPEND test_tx_srcs
     test_tx.cpp
 )
  
